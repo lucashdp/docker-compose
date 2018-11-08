@@ -1,0 +1,10 @@
+version:  "2"
+services:
+    proxy:
+        image: httpd        
+    web:
+        image: php
+        ports:
+          - "8080:80"
+    mysql:
+        image: mysql
