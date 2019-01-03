@@ -1,0 +1,19 @@
+version:  "2"
+services:
+    proxy:
+        image: httpd
+        depends_on:
+          - web
+    web:
+        build:
+        context: .
+        dockerfile: Dockerfile
+        ports:
+          - "3000:3000"
+    volumes:
+      - .:/code
+      - /code/node_modules
+    depends_on:
+      - redis
+    redis:
+        image: redis:alpine
