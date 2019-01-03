@@ -1,0 +1,38 @@
+version: '2'
+services:
+  nginx:
+   container_name: some-nginx
+   image: nginx:1.13
+   restart: always
+   ports:
+   - 81:81
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+ 
+  db:
+    container_name: example_db
+    image: postgres:9.5
+    volumes:
+      - example_db:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_PASSWORD=example
+        - POSTGRES_USER=example
+        - POSTGRES_DB=example
+        - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+          - 5500:5500
+  
+  app:
+    restart: always
+    build: ./app
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - nginx
+      - db
