@@ -1,0 +1,17 @@
+version:  "2"
+services:
+    proxy:
+        image: httpd
+        depends_on:
+          - web
+    web:
+        image: microsoft/dotnet:sdk
+        ports:
+          - "8081:81"
+        depends_on:
+          - sqlserver
+    mysql:
+        image: microsoft/mssql-server-linux
+        environment:
+            SA_PASSWORD: example
+            ACCEPT_EULA: eula_test
